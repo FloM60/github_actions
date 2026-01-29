@@ -1,0 +1,26 @@
+name: Control Push # Nom du workflow
+on: push # Définis l'action sur push
+jobs:
+  qa:
+    name: Check tests # Nom de la tâche
+    runs-on: ubuntu-24.04 # Instace sur laquelle la tâche s'execute
+    steps:
+      - name: Checkout on master # Se place dans la branche master
+        uses: actions/checkout@v3 # Fait appel à un workflow deja existant sur github avec uses
+
+      - name: Set up Python # Installation de python
+        uses: actions/setup-python@master # Fait appel à un workflow deja existant sur github avec uses
+        with:
+          python-version: "3.x" # On spécifie la version souhaité
+
+      - name: Install pytest and flake8 # Installation de 2 paquets, pytest et flake8
+        run: | # On utilise run pour executer des commandes shell
+          pip install pytest
+          pip install flake8
+
+      - name: Run tests # On execute pytest
+        run: | # On utilise run pour executer des commandes shell
+          pytest
+
+      - name: Run flake8 # On execute flake8
+        uses: py-actions/flake8@v2 # Pour flake8, on utilise un workflow deja existant avec uses
